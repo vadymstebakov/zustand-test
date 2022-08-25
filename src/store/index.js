@@ -10,6 +10,7 @@ const persistOptions = {
   partialize: (state) => ({ count: { count: state.count.count } }),
   merge: (persistedState, currentState) => deepMerge(currentState, persistedState),
 };
+const devtoolsOptions = { name: 'main-store', serialize: { options: true } };
 
 let store = (...args) => {
   return {
@@ -20,6 +21,6 @@ let store = (...args) => {
 store = immer(store);
 store = persist(store, persistOptions);
 store = subscribeWithSelector(store);
-store = create(import.meta.env.DEV ? devtools(store) : store);
+store = create(import.meta.env.DEV ? devtools(store, devtoolsOptions) : store);
 
 export const useAppStore = store;
